@@ -194,6 +194,7 @@ def usage():
     print "Examples:"
     print "\t" + sys.argv[0] + " -C Programacion"
     print "\t" + sys.argv[0] + " -C Program*"
+    print ""
 
 if __name__ == "__main__":
     location = "./" + sqlite_file
