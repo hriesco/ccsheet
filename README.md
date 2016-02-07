@@ -9,10 +9,10 @@
 * The application consists of two programs a database file in sqlite and the script that creates de database
 * First program is **ccs.py** : 
     - This application query all the information in the database
-    - [Alt text](https://github.com/hriesco/ccsheet/images/help.png?raw=true "Help")
+    - ![Alt text](images/help.png?raw=true "Help")
 * Second program is **ccsgui.py** :
     - This application use it to graphically enter the data into the database
-    - [Alt text](https://github.com/hriesco/ccsheet/images/gui.png?raw=true "Gui")
+    - ![Alt text](images/gui.png?raw=true "Gui")
 * Third file is the sqlite database **ccs.db**
     - This contains the database with all registers
 * Fourth file is the script that generates database **ccs.sql**
