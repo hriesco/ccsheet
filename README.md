@@ -21,15 +21,18 @@
 ## Installation
 
 * To install in Linux you need the following packages:
+
   ```
     sudo apt-get install libsqlite3-dev sqlite3
     sudo apt-get install python-qt4
   ```
 * To generate the database with the sql script:
+
   ```
     sqlite3 ccs.db < ccs.sql
   ```
 * Copy the files to a folder where you can access anywhere:
+
   ```
     sudo cp ccs.db ccs.py ccsgui.py /usr/local/bin/
   ```
