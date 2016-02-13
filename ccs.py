@@ -199,10 +199,10 @@ def func_listSections(cur, name_cat, name_cmd):
         print "No section in command"
 
 def func_listCommands(cur, name_cat):
-    col = Color()
-    dic = {}
     rows = get_commands_by_nameCat(cur, name_cat)   
     if len(rows) > 0:
+        col = Color()
+        dic = {}
         col.light_aqua("---- COMMANDS ---------------------", True)
         col.light_blue("0)", False)
         col.light_red("EXIT", True)
@@ -286,12 +286,6 @@ def main(cur):
             func_listCategories(cur)
         elif opt in ('-C', '--category'):
             func_category(cur, str(arg).lower())
-        elif opt in ('-c', '--command'):
-            print "Command" + arg
-        elif opt in ('-s', '--section'):
-            print "Section"
-        elif opt in ('-t', '--title'):
-            print "Title"
         else:
             usage()
             sys.exit(2)
@@ -302,9 +296,6 @@ def usage():
     -h --help                  Print this
     -l                         List all categories in database
     -C --category <name[*]>    List category with name
-    -c --command  <name[*]>    List command with name
-    -s --section  <name[*]>    List section with name
-    -t --title                 List title with name
     """
     print "Examples:"
     print "\t" + sys.argv[0] + " -C Programacion"
@@ -318,4 +309,3 @@ if __name__ == "__main__":
         main(cur)
     else:
         print sqlite_file + " not exist"
-
