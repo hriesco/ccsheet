@@ -8,6 +8,88 @@ import os
 
 sqlite_file = 'ccs.db'
 
+class Color():
+    def black(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;30m" + text + chr(27) + "[0m" 
+        else:
+            print chr(27) + "[0;30m" + text + chr(27) + "[0m", 
+    def red(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;31m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;31m" + text + chr(27) + "[0m", 
+    def green(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;32m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;32m" + text + chr(27) + "[0m", 
+    def yellow(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;33m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;33m" + text + chr(27) + "[0m", 
+    def blue(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;34m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;34m" + text + chr(27) + "[0m", 
+    def purple(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;35m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;35m" + text + chr(27) + "[0m", 
+    def aqua(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;36m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;36m" + text + chr(27) + "[0m", 
+    def gray(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;30m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;30m" + text + chr(27) + "[0m", 
+    def white(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;37m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;37m" + text + chr(27) + "[0m", 
+    def light_gray(self, text, endLine):
+        if endLine:
+            print chr(27) + "[0;37m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[0;37m" + text + chr(27) + "[0m", 
+    def light_red(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;31m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;31m" + text + chr(27) + "[0m", 
+    def light_green(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;32m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;32m" + text + chr(27) + "[0m", 
+    def light_yellow(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;33m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;33m" + text + chr(27) + "[0m", 
+    def light_blue(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;34m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;34m" + text + chr(27) + "[0m", 
+    def light_purple(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;35m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;35m" + text + chr(27) + "[0m", 
+    def light_aqua(self, text, endLine):
+        if endLine:
+            print chr(27) + "[1;36m" + text + chr(27) + "[0m"
+        else:
+            print chr(27) + "[1;36m" + text + chr(27) + "[0m", 
+
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
@@ -49,17 +131,22 @@ def get_data_by_title(cur, name_sect, name_title):
     return cur.fetchall()
 
 def func_listCategories(cur):
+    cls()
+    col = Color()
     dic = {}
     rows = get_categories(cur)
     if len(rows) > 0:
-        print "--- CATEGORIES --------------------"
-        print "0 -> EXIT"
+        col.light_aqua("--- CATEGORIES --------------------", True)
+        col.light_blue("0)", False)
+        col.light_red("EXIT", True)
         for i, r in enumerate(rows):
             dic[i+1] = str(r[0])
             if i == len(rows) - 1:
-                print "%s) %s\t\t" % (str(i + 1),  r[0])
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0]
             else:
-                print "%s) %s\t\t" % (str(i + 1),  r[0]),
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0],
         
         indice = int(raw_input("ID > "))
         if indice > len(dic) or indice == 0:
@@ -69,14 +156,17 @@ def func_listCategories(cur):
         rows = get_commands_by_nameCat(cur, name_cat)   
         if len(rows) > 0:
             dic.clear()
-            print "--- COMMANDS ----------------------"
-            print "0 -> EXIT"
+            col.light_aqua("---- COMMANDS ---------------------", True)
+            col.light_blue("0)", False)
+            col.light_red("EXIT", True)
             for i, r, in enumerate(rows):
                 dic[i+1] = str(r[0])
                 if i == len(rows) - 1:
-                    print "%s) %s\t\t" % (str(i + 1),  r[0])
+                    col.light_blue(str(i+1) + ")", False)
+                    print "%s\t\t" % r[0]
                 else:
-                    print "%s) %s\t\t" % (str(i + 1),  r[0]),
+                    col.light_blue(str(i+1) + ")", False)
+                    print "%s\t\t" % r[0],
 
             indice = int(raw_input("ID > "))
             if indice > len(dic) or indice == 0:
@@ -86,14 +176,17 @@ def func_listCategories(cur):
             rows = get_sections_by_nameCmd(cur, name_cmd)   
             if len(rows) > 0:
                 dic.clear()
-                print "--- SECTIONS ----------------------"
-                print "0 -> EXIT"
+                col.light_aqua("---- SECTIONS ----------------------", True)
+                col.light_blue("0)", False)
+                col.light_red("EXIT", True)
                 for i, r, in enumerate(rows):
                     dic[i+1] = str(r[0])
                     if i == len(rows) - 1:
-                        print "%s) %s\t\t" % (str(i + 1),  r[0])
+                        col.light_blue(str(i+1) + ")", False)
+                        print "%s\t\t" % r[0]
                     else:
-                        print "%s) %s\t\t" % (str(i + 1),  r[0]),
+                        col.light_blue(str(i+1) + ")", False)
+                        print "%s\t\t" % r[0],
 
                 indice = int(raw_input("ID > "))
                 if indice > len(dic) or indice == 0:
@@ -103,14 +196,17 @@ def func_listCategories(cur):
                 rows = get_title_by_nameSect(cur, name_sect)   
                 if len(rows) > 0:
                     dic.clear()
-                    print "--- DATA --------------------------"
-                    print "0 -> EXIT"
+                    col.light_aqua("--- DATA --------------------------", True)
+                    col.light_blue("0)", False)
+                    col.light_red("EXIT", True)
                     for i, r, in enumerate(rows):
                         dic[i+1] = str(r[0])
                         if i == len(rows) - 1:
-                            print "%s) %s\t\t" % (str(i + 1),  r[0])
+                            col.light_blue(str(i+1) + ")", False)
+                            print "%s\t\t" % r[0]
                         else:
-                            print "%s) %s\t\t" % (str(i + 1),  r[0]),
+                            col.light_blue(str(i+1) + ")", False)
+                            print "%s\t\t" % r[0],
 
                     indice = int(raw_input("ID > "))
                     if indice > len(dic) or indice == 0:
@@ -120,11 +216,13 @@ def func_listCategories(cur):
                     rows = get_data_by_title(cur, name_sect, name_title)   
                     if len(rows) > 0:
                         cls()
-                        print "---------------------------------------------------------"
-                        print " " + name_cat + " >> " + name_cmd + " >> " + name_sect   
-                        print "---------------------------------------------------------"
-                        print " " + name_title
-                        print "---------------------------------------------------------"
+                        col.light_blue("---------------------------------------------------------",True)
+                        col.light_green(" "+ name_cat, False)
+                        col.light_blue(">> " + name_cmd, False)
+                        col.light_purple(">> " + name_sect, True)
+                        col.light_blue("---------------------------------------------------------",True)
+                        col.light_red(" " + name_title, True)
+                        col.light_blue("---------------------------------------------------------",True)
                         print rows[0][0]
                     else:
                         print "No text in this section"
@@ -158,8 +256,13 @@ def main(cur):
                                                             'section=', 
                                                             'title=', 
                                                             'help',])
+    
     except getopt.GetoptError, err:
         print str(err)
+        usage()
+        sys.exit(2)
+
+    if len(opts) == 0:
         usage()
         sys.exit(2)
 
