@@ -101,14 +101,16 @@ def connect():
 def get_categories(cur):
     cur.execute("SELECT name FROM category")
     return cur.fetchall()
-def get_id_category(cur, nameCat, filter):
-    if not filter:
-        cur.execute("SELECT id_category FROM category WHERE name =?", (nameCat,))
+def get_names_category(cur, nameCat, myFilter):
+    if not myFilter:
+        cur.execute("SELECT name FROM category WHERE LOWER(name)=?", (nameCat,))
     else:
         value = nameCat[:-1] + '%'
-        cur.execute("SELECT id_category FROM category WHERE name LIKE ?", (value,))
+        cur.execute("SELECT name FROM category WHERE name LIKE ?", (value,))
     return cur.fetchall()
-
+def get_nameCategory_by_idCat(cur, idCat):
+    cur.execute("SELECT name FROM category WHERE id_category=?", (idCat,))
+    return cur.fetchone()
 def get_commands_by_nameCat(cur, name):
     cur.execute("SELECT id_category FROM category WHERE name=?", (name,))
     indice = cur.fetchone()
@@ -130,12 +132,104 @@ def get_data_by_title(cur, name_sect, name_title):
     cur.execute("SELECT text FROM data WHERE title=? and id_section=?", (name_title, indice[0]))
     return cur.fetchall()
 
-def func_listCategories(cur):
-    cls()
+def func_printData(cur, name_cat, name_cmd, name_sect, name_title):
+    col = Color()
+    rows = get_data_by_title(cur, name_sect, name_title)   
+    if len(rows) > 0:
+        cls()
+        col.light_blue("---------------------------------------------------------",True)
+        col.light_green(" "+ name_cat, False)
+        col.light_blue(">> " + name_cmd, False)
+        col.light_purple(">> " + name_sect, True)
+        col.light_blue("---------------------------------------------------------",True)
+        col.light_red(" " + name_title, True)
+        col.light_blue("---------------------------------------------------------",True)
+        print rows[0][0]
+    else:
+        print "No text in this section"
+
+def func_listData(cur, name_cat, name_cmd, name_sect):
     col = Color()
     dic = {}
-    rows = get_categories(cur)
+    rows = get_title_by_nameSect(cur, name_sect)   
     if len(rows) > 0:
+        col.light_aqua("--- DATA --------------------------", True)
+        col.light_blue("0)", False)
+        col.light_red("EXIT", True)
+        for i, r, in enumerate(rows):
+            dic[i+1] = str(r[0])
+            if i == len(rows) - 1:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0]
+            else:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0],
+
+        indice = int(raw_input("ID > "))
+        if indice > len(dic) or indice == 0:
+            sys.exit(2)
+        name_title = dic.get(indice)
+        func_printData(cur, name_cat, name_cmd, name_sect, name_title)
+    else:
+        print "No data in section"
+
+def func_listSections(cur, name_cat, name_cmd):
+    col = Color()
+    dic = {}
+    rows = get_sections_by_nameCmd(cur, name_cmd)   
+    if len(rows) > 0:
+        col.light_aqua("---- SECTIONS ----------------------", True)
+        col.light_blue("0)", False)
+        col.light_red("EXIT", True)
+        for i, r, in enumerate(rows):
+            dic[i+1] = str(r[0])
+            if i == len(rows) - 1:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0]
+            else:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0],
+
+        indice = int(raw_input("ID > "))
+        if indice > len(dic) or indice == 0:
+            sys.exit(2)
+        name_sect = dic.get(indice)
+        func_listData(cur, name_cat, name_cmd, name_sect)
+    else:
+        print "No section in command"
+
+def func_listCommands(cur, name_cat):
+    col = Color()
+    dic = {}
+    rows = get_commands_by_nameCat(cur, name_cat)   
+    if len(rows) > 0:
+        col.light_aqua("---- COMMANDS ---------------------", True)
+        col.light_blue("0)", False)
+        col.light_red("EXIT", True)
+        for i, r, in enumerate(rows):
+            dic[i+1] = str(r[0])
+            if i == len(rows) - 1:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0]
+            else:
+                col.light_blue(str(i+1) + ")", False)
+                print "%s\t\t" % r[0],
+
+        indice = int(raw_input("ID > "))
+        if indice > len(dic) or indice == 0:
+            sys.exit(2)
+        name_cmd = dic.get(indice)
+        func_listSections(cur, name_cat, name_cmd)
+    else:
+        print "No command in category"
+
+def func_listCategories(cur, rows = None):
+    if rows == None:
+        rows = get_categories(cur)
+    if len(rows) > 0:
+        cls()
+        col = Color()
+        dic = {}
         col.light_aqua("--- CATEGORIES --------------------", True)
         col.light_blue("0)", False)
         col.light_red("EXIT", True)
@@ -152,102 +246,20 @@ def func_listCategories(cur):
         if indice > len(dic) or indice == 0:
             sys.exit(2)
         name_cat = dic.get(indice)
-
-        rows = get_commands_by_nameCat(cur, name_cat)   
-        if len(rows) > 0:
-            dic.clear()
-            col.light_aqua("---- COMMANDS ---------------------", True)
-            col.light_blue("0)", False)
-            col.light_red("EXIT", True)
-            for i, r, in enumerate(rows):
-                dic[i+1] = str(r[0])
-                if i == len(rows) - 1:
-                    col.light_blue(str(i+1) + ")", False)
-                    print "%s\t\t" % r[0]
-                else:
-                    col.light_blue(str(i+1) + ")", False)
-                    print "%s\t\t" % r[0],
-
-            indice = int(raw_input("ID > "))
-            if indice > len(dic) or indice == 0:
-                sys.exit(2)
-            name_cmd = dic.get(indice)
-
-            rows = get_sections_by_nameCmd(cur, name_cmd)   
-            if len(rows) > 0:
-                dic.clear()
-                col.light_aqua("---- SECTIONS ----------------------", True)
-                col.light_blue("0)", False)
-                col.light_red("EXIT", True)
-                for i, r, in enumerate(rows):
-                    dic[i+1] = str(r[0])
-                    if i == len(rows) - 1:
-                        col.light_blue(str(i+1) + ")", False)
-                        print "%s\t\t" % r[0]
-                    else:
-                        col.light_blue(str(i+1) + ")", False)
-                        print "%s\t\t" % r[0],
-
-                indice = int(raw_input("ID > "))
-                if indice > len(dic) or indice == 0:
-                    sys.exit(2)
-                name_sect = dic.get(indice)
-
-                rows = get_title_by_nameSect(cur, name_sect)   
-                if len(rows) > 0:
-                    dic.clear()
-                    col.light_aqua("--- DATA --------------------------", True)
-                    col.light_blue("0)", False)
-                    col.light_red("EXIT", True)
-                    for i, r, in enumerate(rows):
-                        dic[i+1] = str(r[0])
-                        if i == len(rows) - 1:
-                            col.light_blue(str(i+1) + ")", False)
-                            print "%s\t\t" % r[0]
-                        else:
-                            col.light_blue(str(i+1) + ")", False)
-                            print "%s\t\t" % r[0],
-
-                    indice = int(raw_input("ID > "))
-                    if indice > len(dic) or indice == 0:
-                        sys.exit(2)
-                    name_title = dic.get(indice)
-
-                    rows = get_data_by_title(cur, name_sect, name_title)   
-                    if len(rows) > 0:
-                        cls()
-                        col.light_blue("---------------------------------------------------------",True)
-                        col.light_green(" "+ name_cat, False)
-                        col.light_blue(">> " + name_cmd, False)
-                        col.light_purple(">> " + name_sect, True)
-                        col.light_blue("---------------------------------------------------------",True)
-                        col.light_red(" " + name_title, True)
-                        col.light_blue("---------------------------------------------------------",True)
-                        print rows[0][0]
-                    else:
-                        print "No text in this section"
-                else:
-                    print "No data in section"
-            else:
-                print "No section in command"
-        else:
-            print "No command in category"
+        func_listCommands(cur, name_cat)
     else:
         print "No categories in database"
 
 def func_category(cur, arg):
-    filter = False
+    myFilter = False
     if arg[-1] == '*':
-        filter = True
+        myFilter = True
 
-    id_cat = get_id_category(cur, arg, filter)
-    if id_cat:
-        for r in id_cat:
-            print r[0]
+    rows = get_names_category(cur, arg, myFilter)
+    if rows:
+        func_listCategories(cur, rows)
     else:
         print "This category not exist in database."
-
-
 
 def main(cur):
     try:
@@ -273,7 +285,7 @@ def main(cur):
         elif opt in ('-l'):
             func_listCategories(cur)
         elif opt in ('-C', '--category'):
-            func_category(cur, arg)
+            func_category(cur, str(arg).lower())
         elif opt in ('-c', '--command'):
             print "Command" + arg
         elif opt in ('-s', '--section'):
