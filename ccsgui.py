@@ -233,7 +233,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         self.txtTitle.setGeometry(QtCore.QRect(80, 410, 300, 29))
 
         self.label_5 = QtGui.QLabel(self.centralwidget)
-        self.label_5.setText("Titulo")
+        self.label_5.setText("Title")
         self.label_5.setGeometry(QtCore.QRect(20, 410, 100, 29))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(3)
