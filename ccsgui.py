@@ -293,8 +293,12 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         self.getCategories(select)
     
     def onCbCommand_change(self):
-        value = self.cbCommand.currentText()
-        select = str("SELECT id_command FROM command WHERE name=\"" + value + "\"")
+        valueCategory = self.cbCategory.currentText()
+        select = "SELECT id_category FROM category WHERE name=\"" + str(valueCategory) + "\""
+        self.cur.execute(select)
+        idCat = self.cur.fetchone()
+        valueCmd = self.cbCommand.currentText()
+        select = str("SELECT id_command FROM command WHERE name=\"" + valueCmd + "\"" + " AND id_category=" + str(idCat[0]))
         self.cbSection.clear()
         self.txtEditRaw.clear()
         self.txtEditDone.clear()
@@ -302,8 +306,12 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         self.getCommands(select)
         
     def onCbSection_change(self):
-        value = self.cbSection.currentText()
-        select = str("SELECT id_section FROM Section WHERE name=\"" + value + "\"")
+        valueCmd = self.cbCommand.currentText()
+        select = "SELECT id_command FROM command WHERE name=\"" + str(valueCmd) + "\""
+        self.cur.execute(select)
+        idCmd = self.cur.fetchone()
+        valueSect = self.cbSection.currentText()
+        select = str("SELECT id_section FROM Section WHERE name=\"" + valueSect + "\"" + " AND id_command=" + str(idCmd[0]))
         self.txtEditRaw.clear()
         self.txtEditDone.clear()
         self.txtTitle.clear()
@@ -489,8 +497,12 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         if self.cbCommand.count() > 0 and self.cbCategory.count() > 0:
             text, ok = QtGui.QInputDialog.getText(self, 'New Section', 'Enter the name of section:')
             if ok:
-                value = self.cbCommand.currentText()
-                select = str("SELECT id_command FROM command WHERE name=\"" + value + "\"")
+                valueCategory = self.cbCategory.currentText()
+                select = "SELECT id_category FROM category WHERE name=\"" + str(valueCategory) + "\""
+                self.cur.execute(select)
+                idCat = self.cur.fetchone()
+                valueCmd = self.cbCommand.currentText()
+                select = str("SELECT id_command FROM command WHERE name=\"" + valueCmd + "\"" + " AND id_category=" + str(idCat[0]))
                 self.cur.execute(select)
                 id_cmd = self.cur.fetchone()
                 self.cur.execute("SELECT name FROM section WHERE id_command=?", (str(id_cmd[0]),))
