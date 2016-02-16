@@ -263,10 +263,7 @@ def func_category(cur, arg):
 
 def main(cur):
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'lC:c:s:t:h', ['category=', 
-                                                            'command=', 
-                                                            'section=', 
-                                                            'title=', 
+        opts, args = getopt.getopt(sys.argv[1:], 'lc:h', ['category=', 
                                                             'help',])
     
     except getopt.GetoptError, err:
@@ -284,7 +281,7 @@ def main(cur):
             sys.exit(2)
         elif opt in ('-l'):
             func_listCategories(cur)
-        elif opt in ('-C', '--category'):
+        elif opt in ('-c', '--category'):
             func_category(cur, str(arg).lower())
         else:
             usage()
@@ -295,11 +292,11 @@ def usage():
     print """
     -h --help                  Print this
     -l                         List all categories in database
-    -C --category <name[*]>    List category with name
+    -c --category <name[*]>    List category with name
     """
     print "Examples:"
-    print "\t" + sys.argv[0] + " -C Programacion"
-    print "\t" + sys.argv[0] + " -C Program*"
+    print "\t" + sys.argv[0] + " -c Programacion"
+    print "\t" + sys.argv[0] + " -c Program*"
     print ""
 
 if __name__ == "__main__":
