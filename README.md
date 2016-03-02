@@ -16,9 +16,10 @@
 * Third file is the sqlite database **ccs.db**
     - This contains the database with all registers
 * Fourth file is the script that generates database **ccs.sql**
-    
+* Fifth file install.sh is the script that install the application to O.S.    
+* Sixth file uninstall.sh is the script that uninstall the application to O.S.    
 
-## Installation
+## Install
 
 * To install in Linux you need the following packages:
 
@@ -26,17 +27,28 @@
     sudo apt-get install libsqlite3-dev sqlite3
     sudo apt-get install python-qt4
   ```
-* To generate the database with the sql script:
+* To generate the database with the sql script (if you want, you can use my own ccs.db and you can discard this step):
 
   ```
     sqlite3 ccs.db < ccs.sql
   ```
-* Copy the files to a folder where you can access anywhere:
+* Install the program from the install.sh script :
 
   ```
-    sudo cp ccs.db ccs.py ccsgui.py /usr/local/bin/
+    sudo chmod +x install.sh
+    sudo ./install.sh
   ```
-  
+    
+
+## Uninstall
+
+* Uninstall the application to the OS:
+
+  ```
+    sudo chmod +x uninstall.sh
+    sudo ./uninstall.sh
+  ```
+
 ## Suggestions
 
 * I accept any suggestion to make any changes to the application
