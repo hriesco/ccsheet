@@ -37,5 +37,5 @@ if [ $UID -eq 0 ]; then
 	echo "ccsgui - command cheatsheet gui for make new cheatsheet"
 	echo "Enjoy :)"
 else
-	echo "You must to login as root"
+	echo "You must login as root"
 fi
