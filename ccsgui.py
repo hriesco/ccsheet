@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
@@ -7,6 +6,7 @@ import sqlite3 as lite
 from PyQt4 import QtCore, QtGui
 
 sqlite_file = 'ccs.db'
+isOpenBd = False
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -27,244 +27,142 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         QtGui.QWidget.__init__(self)
         self.setupUi(self)
         self.con = None
+        self.dicCat = {}
+        self.dicCmd = {}
+        self.dicSec = {}
+        self.dicTit = {}
 
-    def setupUi(self, Form):
-        Form.setObjectName(_fromUtf8("Form"))
-        Form.setWindowModality(QtCore.Qt.NonModal)
-        Form.resize(820, 460)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
-        Form.setSizePolicy(sizePolicy)
-        Form.setMinimumSize(QtCore.QSize(820, 460))
-        Form.setMaximumSize(QtCore.QSize(820, 460))
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.setWindowModality(QtCore.Qt.NonModal)
+        MainWindow.resize(782, 544)
+        MainWindow.setMaximumSize(QtCore.QSize(782, 544))
+        MainWindow.setMinimumSize(QtCore.QSize(782, 544))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(33, 33, 33))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(29, 26, 30))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(33, 33, 33))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(94, 93, 93))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(159, 158, 158))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(159, 158, 158))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(94, 93, 93))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(94, 93, 93))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-        Form.setPalette(palette)
+        MainWindow.setPalette(palette)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("ccs.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        Form.setStatusTip(_fromUtf8(""))
-        Form.setAutoFillBackground(False)
-        self.centralwidget = QtGui.QWidget(Form)
+        MainWindow.setWindowIcon(icon)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Ubuntu"))
+        font.setStyleStrategy(QtGui.QFont.PreferDefault)
+        MainWindow.setFont(font)
+        self.centralwidget = QtGui.QWidget(MainWindow)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayoutWidget_2 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(10, 140, 801, 261))
-        self.verticalLayoutWidget_2.setObjectName(_fromUtf8("verticalLayoutWidget_2"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.verticalLayoutWidget_2)
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.tabWidget = QtGui.QTabWidget(self.verticalLayoutWidget_2)
-        self.tabWidget.setEnabled(True)
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(0, 85, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 85, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(159, 158, 158))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        self.tabWidget.setPalette(palette)
-        self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.tab1 = QtGui.QWidget()
-        self.tab1.setObjectName(_fromUtf8("tab1"))
-        self.txtEditRaw = QtGui.QTextEdit(self.tab1)
-        self.txtEditRaw.setGeometry(QtCore.QRect(0, 0, 778, 208))
-        self.txtEditRaw.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.txtEditRaw.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.txtEditRaw.setLineWrapMode(QtGui.QTextEdit.NoWrap)
-        self.txtEditRaw.setTabStopWidth(80)
-        self.txtEditRaw.setObjectName(_fromUtf8("txtEditRaw"))
-        self.tabWidget.addTab(self.tab1, _fromUtf8(""))
-        self.tab2 = QtGui.QWidget()
-        self.tab2.setObjectName(_fromUtf8("tab2"))
-        self.txtEditDone = QtGui.QTextEdit(self.tab2)
-        self.txtEditDone.setGeometry(QtCore.QRect(0, 0, 778, 208))
-        self.txtEditDone.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.txtEditDone.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.txtEditDone.setObjectName(_fromUtf8("txtEditDone"))
-        self.tabWidget.addTab(self.tab2, _fromUtf8(""))
-        self.verticalLayout_2.addWidget(self.tabWidget)
-        self.horizontalLayoutWidget = QtGui.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 561, 41))
-        self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(10, -1, 10, -1)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.label = QtGui.QLabel(self.horizontalLayoutWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(3)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(159, 158, 158))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        self.label.setPalette(palette)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.horizontalLayout.addWidget(self.label)
-        self.btnNewCategory = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.btnNewCategory.setObjectName(_fromUtf8("btnNewCategory"))
-        self.horizontalLayout.addWidget(self.btnNewCategory)
-        self.btnDeleteCategory = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.btnDeleteCategory.setObjectName(_fromUtf8("btnDeleteCategory"))
-        self.horizontalLayout.addWidget(self.btnDeleteCategory)
-        self.cbCategory = QtGui.QComboBox(self.horizontalLayoutWidget)
-        self.cbCategory.setObjectName(_fromUtf8("cbCategory"))
-        self.horizontalLayout.addWidget(self.cbCategory)
-        self.horizontalLayout.setStretch(3, 8)
-        self.horizontalLayoutWidget_2 = QtGui.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(10, 50, 561, 41))
-        self.horizontalLayoutWidget_2.setObjectName(_fromUtf8("horizontalLayoutWidget_2"))
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.horizontalLayoutWidget_2)
-        self.horizontalLayout_3.setContentsMargins(10, -1, 10, -1)
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.label_2 = QtGui.QLabel(self.horizontalLayoutWidget_2)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(3)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.horizontalLayout_3.addWidget(self.label_2)
-        self.btnNewCommand = QtGui.QPushButton(self.horizontalLayoutWidget_2)
-        self.btnNewCommand.setObjectName(_fromUtf8("btnNewCommand"))
-        self.horizontalLayout_3.addWidget(self.btnNewCommand)
-        self.btnDeleteCommand = QtGui.QPushButton(self.horizontalLayoutWidget_2)
+        self.gridLayoutWidget = QtGui.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 761, 501))
+        self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
+        self.gridButtons = QtGui.QGridLayout(self.gridLayoutWidget)
+        self.gridButtons.setSizeConstraint(QtGui.QLayout.SetMinAndMaxSize)
+        self.gridButtons.setContentsMargins(-1, -1, 0, -1)
+        self.gridButtons.setHorizontalSpacing(6)
+        self.gridButtons.setVerticalSpacing(2)
+        self.gridButtons.setObjectName(_fromUtf8("gridButtons"))
+        self.btnDeleteCommand = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnDeleteCommand.setObjectName(_fromUtf8("btnDeleteCommand"))
-        self.horizontalLayout_3.addWidget(self.btnDeleteCommand)
-        self.cbCommand = QtGui.QComboBox(self.horizontalLayoutWidget_2)
+        self.gridButtons.addWidget(self.btnDeleteCommand, 1, 3, 1, 1)
+        self.btnSaveBd = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnSaveBd.setObjectName(_fromUtf8("btnSaveBd"))
+        self.gridButtons.addWidget(self.btnSaveBd, 7, 4, 1, 1)
+        self.txtEditRaw = QtGui.QTextEdit(self.gridLayoutWidget)
+        self.txtEditRaw.setObjectName(_fromUtf8("txtEditRaw"))
+        self.gridButtons.addWidget(self.txtEditRaw, 4, 1, 3, 4)
+        self.lblCategory = QtGui.QLabel(self.gridLayoutWidget)
+        self.lblCategory.setObjectName(_fromUtf8("lblCategory"))
+        self.gridButtons.addWidget(self.lblCategory, 0, 1, 1, 1)
+        self.btnNewCategory = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnNewCategory.setObjectName(_fromUtf8("btnNewCategory"))
+        self.gridButtons.addWidget(self.btnNewCategory, 0, 2, 1, 1)
+        self.cbCategory = QtGui.QComboBox(self.gridLayoutWidget)
+        self.cbCategory.setObjectName(_fromUtf8("cbCategory"))
+        self.gridButtons.addWidget(self.cbCategory, 0, 4, 1, 1)
+        self.lblSection = QtGui.QLabel(self.gridLayoutWidget)
+        self.lblSection.setObjectName(_fromUtf8("lblSection"))
+        self.gridButtons.addWidget(self.lblSection, 2, 1, 1, 1)
+        self.btnDeleteCategory = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnDeleteCategory.setObjectName(_fromUtf8("btnDeleteCategory"))
+        self.gridButtons.addWidget(self.btnDeleteCategory, 0, 3, 1, 1)
+        self.lblCommand = QtGui.QLabel(self.gridLayoutWidget)
+        self.lblCommand.setObjectName(_fromUtf8("lblCommand"))
+        self.gridButtons.addWidget(self.lblCommand, 1, 1, 1, 1)
+        self.btnNewCommand = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnNewCommand.setObjectName(_fromUtf8("btnNewCommand"))
+        self.gridButtons.addWidget(self.btnNewCommand, 1, 2, 1, 1)
+        self.cbTitle = QtGui.QComboBox(self.gridLayoutWidget)
+        self.cbTitle.setObjectName(_fromUtf8("cbTitle"))
+        self.gridButtons.addWidget(self.cbTitle, 3, 4, 1, 1)
+        self.cbCommand = QtGui.QComboBox(self.gridLayoutWidget)
         self.cbCommand.setObjectName(_fromUtf8("cbCommand"))
-        self.horizontalLayout_3.addWidget(self.cbCommand)
-        self.horizontalLayout_3.setStretch(3, 8)
-        self.horizontalLayoutWidget_4 = QtGui.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(10, 90, 561, 41))
-        self.horizontalLayoutWidget_4.setObjectName(_fromUtf8("horizontalLayoutWidget_4"))
-        self.horizontalLayout_5 = QtGui.QHBoxLayout(self.horizontalLayoutWidget_4)
-        self.horizontalLayout_5.setContentsMargins(10, -1, 10, -1)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.label_3 = QtGui.QLabel(self.horizontalLayoutWidget_4)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(3)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.horizontalLayout_5.addWidget(self.label_3)
-        self.btnNewSection = QtGui.QPushButton(self.horizontalLayoutWidget_4)
+        self.gridButtons.addWidget(self.cbCommand, 1, 4, 1, 1)
+        self.btnNewSection = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnNewSection.setObjectName(_fromUtf8("btnNewSection"))
-        self.horizontalLayout_5.addWidget(self.btnNewSection)
-        self.btnDeleteSection = QtGui.QPushButton(self.horizontalLayoutWidget_4)
+        self.gridButtons.addWidget(self.btnNewSection, 2, 2, 1, 1)
+        self.btnDeleteSection = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnDeleteSection.setObjectName(_fromUtf8("btnDeleteSection"))
-        self.horizontalLayout_5.addWidget(self.btnDeleteSection)
-        self.cbSection = QtGui.QComboBox(self.horizontalLayoutWidget_4)
+        self.gridButtons.addWidget(self.btnDeleteSection, 2, 3, 1, 1)
+        self.lblTitle = QtGui.QLabel(self.gridLayoutWidget)
+        self.lblTitle.setObjectName(_fromUtf8("lblTitle"))
+        self.gridButtons.addWidget(self.lblTitle, 3, 1, 1, 1)
+        self.btnNewTitle = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnNewTitle.setObjectName(_fromUtf8("btnNewTitle"))
+        self.gridButtons.addWidget(self.btnNewTitle, 3, 2, 1, 1)
+        self.cbSection = QtGui.QComboBox(self.gridLayoutWidget)
         self.cbSection.setObjectName(_fromUtf8("cbSection"))
-        self.horizontalLayout_5.addWidget(self.cbSection)
-        self.horizontalLayout_5.setStretch(3, 8)
-        self.btnSave = QtGui.QPushButton(self.centralwidget)
-        self.btnSave.setGeometry(QtCore.QRect(723, 410, 81, 29))
-        self.btnSave.setObjectName(_fromUtf8("btnSave"))
-        Form.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(Form)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 818, 27))
+        self.gridButtons.addWidget(self.cbSection, 2, 4, 1, 1)
+        self.btnDeleteTitle = QtGui.QPushButton(self.gridLayoutWidget)
+        self.btnDeleteTitle.setObjectName(_fromUtf8("btnDeleteTitle"))
+        self.gridButtons.addWidget(self.btnDeleteTitle, 3, 3, 1, 1)
+        self.gridButtons.setColumnStretch(4, 1)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 27))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        Form.setMenuBar(self.menubar)
-        self.actionOpenFile = QtGui.QAction(Form)
+        MainWindow.setMenuBar(self.menubar)
+        self.actionOpenFile = QtGui.QAction(MainWindow)
         self.actionOpenFile.setObjectName(_fromUtf8("actionOpenFile"))
-        self.actionInfo = QtGui.QAction(Form)
-        self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
-        self.actionQuit = QtGui.QAction(Form)
+        self.actionQuit = QtGui.QAction(MainWindow)
         self.actionQuit.setObjectName(_fromUtf8("actionQuit"))
+        self.actionInfo = QtGui.QAction(MainWindow)
+        self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
         self.menuFile.addAction(self.actionOpenFile)
         self.menuFile.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionInfo)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
-        self.txtTitle = QtGui.QTextEdit(self.centralwidget)
-        self.txtTitle.setGeometry(QtCore.QRect(80, 410, 300, 29))
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.label_5 = QtGui.QLabel(self.centralwidget)
-        self.label_5.setText("Title")
-        self.label_5.setGeometry(QtCore.QRect(20, 410, 100, 29))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(3)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy)
-        self.label_5.setObjectName(_fromUtf8("label_5"))
-
-        self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Command Cheatsheet GUI", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), _translate("Form", "Raw", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), _translate("Form", "Done", None))
-        self.label.setText(_translate("Form", "Category:", None))
-        self.label_2.setText(_translate("Form", "Command:", None))
-        self.label_3.setText(_translate("Form", "Section:", None))
-        self.btnNewCategory.setText(_translate("Form", "New", None))
-        self.btnDeleteCategory.setText(_translate("Form", "Delete", None))
-        self.btnNewCommand.setText(_translate("Form", "New", None))
-        self.btnDeleteCommand.setText(_translate("Form", "Delete", None))
-        self.btnNewSection.setText(_translate("Form", "New", None))
-        self.btnDeleteSection.setText(_translate("Form", "Delete", None))
-        self.btnSave.setText(_translate("Form", "Save", None))
-        self.menuFile.setTitle(_translate("Form", "File", None))
-        self.menuHelp.setTitle(_translate("Form", "Help", None))
-        self.actionOpenFile.setText(_translate("Form", "Open Sqlite file", None))
-        self.actionInfo.setText(_translate("Form", "Info", None))
-        self.actionQuit.setText(_translate("Form", "Quit", None))
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(_translate("MainWindow", "Command CheatSheet v2.0", None))
+        self.btnDeleteCommand.setText(_translate("MainWindow", "Delete", None))
+        self.btnSaveBd.setText(_translate("MainWindow", "Save text into Database", None))
+        self.lblCategory.setText(_translate("MainWindow", "Category", None))
+        self.btnNewCategory.setText(_translate("MainWindow", "New", None))
+        self.lblSection.setText(_translate("MainWindow", "Section", None))
+        self.btnDeleteCategory.setText(_translate("MainWindow", "Delete", None))
+        self.lblCommand.setText(_translate("MainWindow", "Command", None))
+        self.btnNewCommand.setText(_translate("MainWindow", "New", None))
+        self.btnNewSection.setText(_translate("MainWindow", "New", None))
+        self.btnDeleteSection.setText(_translate("MainWindow", "Delete", None))
+        self.lblTitle.setText(_translate("MainWindow", "Title", None))
+        self.btnNewTitle.setText(_translate("MainWindow", "New", None))
+        self.btnDeleteTitle.setText(_translate("MainWindow", "Delete", None))
+        self.menuFile.setTitle(_translate("MainWindow", "File", None))
+        self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
+        self.actionOpenFile.setText(_translate("MainWindow", "Open sqlite file", None))
+        self.actionQuit.setText(_translate("MainWindow", "Quit", None))
+        self.actionInfo.setText(_translate("MainWindow", "Info", None))
 
         self.btnNewCategory.clicked.connect(self.addCategory)
         self.btnDeleteCategory.clicked.connect(self.delCategory)
@@ -272,112 +170,25 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         self.btnDeleteCommand.clicked.connect(self.delCommand)
         self.btnNewSection.clicked.connect(self.addSection)
         self.btnDeleteSection.clicked.connect(self.delSection)
-        self.btnSave.clicked.connect(self.saveBd)
+        self.btnNewTitle.clicked.connect(self.addTitle)
+        self.btnDeleteTitle.clicked.connect(self.delTitle)
+        self.btnSaveBd.clicked.connect(self.saveBd)
 
         self.cbCategory.activated[str].connect(self.onCbCategory_change)
         self.cbCommand.activated[str].connect(self.onCbCommand_change)
         self.cbSection.activated[str].connect(self.onCbSection_change)
+        self.cbTitle.activated[str].connect(self.onCbTitle_change)
         
         self.actionInfo.triggered.connect(self.showInfo)
         self.actionOpenFile.triggered.connect(self.openFile)
         self.actionQuit.triggered.connect(self.exitApp)
-  
-    def onCbCategory_change(self):
-        value = self.cbCategory.currentText()
-        select = str("SELECT id_category FROM category WHERE name=\"" + value + "\"")
-        self.cbCommand.clear()
-        self.cbSection.clear()
-        self.txtEditRaw.clear()
-        self.txtEditDone.clear()
-        self.txtTitle.clear()
-        self.getCategories(select)
-    
-    def onCbCommand_change(self):
-        valueCategory = self.cbCategory.currentText()
-        select = "SELECT id_category FROM category WHERE name=\"" + str(valueCategory) + "\""
-        self.cur.execute(select)
-        idCat = self.cur.fetchone()
-        valueCmd = self.cbCommand.currentText()
-        select = str("SELECT id_command FROM command WHERE name=\"" + valueCmd + "\"" + " AND id_category=" + str(idCat[0]))
-        self.cbSection.clear()
-        self.txtEditRaw.clear()
-        self.txtEditDone.clear()
-        self.txtTitle.clear()
-        self.getCommands(select)
-        
-    def onCbSection_change(self):
-        valueCmd = self.cbCommand.currentText()
-        select = "SELECT id_command FROM command WHERE name=\"" + str(valueCmd) + "\""
-        self.cur.execute(select)
-        idCmd = self.cur.fetchone()
-        valueSect = self.cbSection.currentText()
-        select = str("SELECT id_section FROM Section WHERE name=\"" + valueSect + "\"" + " AND id_command=" + str(idCmd[0]))
-        self.txtEditRaw.clear()
-        self.txtEditDone.clear()
-        self.txtTitle.clear()
-        self.getSections(select)
-
-    def openFile(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self, "Open File")
-        self.openBd(filename)
-
-    def getCategories(self, select):
-        self.cur.execute(select)
-        rows = self.cur.fetchall()
-        if len(rows) > 0:
-            if self.cbCategory.count() == 0:
-                for r in rows:
-                    self.cbCategory.addItem(r[1])
-            select = "SELECT * FROM Command WHERE id_category=" + str(rows[0][0])
-            self.getCommands(select)
-
-    def getCommands(self, select):
-        self.cur.execute(select)
-        rows = self.cur.fetchall()
-        if len(rows) > 0:
-            if self.cbCommand.count() == 0:
-                for r in rows:
-                    self.cbCommand.addItem(r[2])
-            select = "SELECT * FROM Section WHERE id_command=" + str(rows[0][0])
-            self.getSections(select)
-
-    def getSections(self, select):
-        self.cur.execute(select)
-        rows = self.cur.fetchall()
-        if len(rows) > 0:
-            if self.cbSection.count() == 0:
-                for r in rows:
-                    self.cbSection.addItem(r[2])
-            select = "SELECT * FROM Data WHERE id_section=" + str(rows[0][0])
-            self.getData(select)
-
-    def getData(self, select):
-        self.cur.execute(select)
-        rows = self.cur.fetchall()
-        if len(rows) > 0:
-            self.txtTitle.setText(rows[0][2])
-            self.txtEditRaw.append(rows[0][3])
-
-    def insertDataInCombo(self, comboBox, index_row):
-        rows = self.cur.fetchall()
-        for r in rows:
-            comboBox.addItem(r[index_row])
-        return len(rows)
 
     def openBd(self, filename):
+        openBd = True
         self.con = lite.connect(str(filename))
         self.cur = self.con.cursor()
         self.cur.execute("PRAGMA foreign_keys = ON")
-        self.getAllDataFromBD()
-
-    def getAllDataFromBD(self):
-        self.cbCategory.clear()
-        self.cbCommand.clear()
-        self.cbSection.clear()
-        self.txtEditRaw.clear()
-        self.txtEditDone.clear()
-        self.txtTitle.clear()
-        self.getCategories("SELECT * FROM Category")
+        self.getCategories()
 
     def exitApp(self):
         sys.exit()
@@ -385,201 +196,298 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
     def showInfo(self):
         QtGui.QMessageBox.information(self, "Information", "Author: Hector Riesco\nEmail: hectorriesco@hotmail.com", QtGui.QMessageBox.Ok)
 
-    def addCategory(self):
-        text, ok = QtGui.QInputDialog.getText(self, 'New Category', 'Enter the name of Category:')
-        if ok:
-            self.cur.execute("SELECT name FROM category")
+    def openFile(self):
+        filename = QtGui.QFileDialog.getOpenFileName(self, "Open File")
+        self.openBd(filename)
+
+    def onCbCategory_change(self):
+        self.getCommands()
+    
+    def onCbCommand_change(self):
+        self.getSections()
+        
+    def onCbSection_change(self):
+        self.getTitles()
+
+    def onCbTitle_change(self):
+        self.getData()
+
+    def getCategories(self):
+        self.cur.execute("SELECT id_category,name FROM category ORDER BY LOWER(name)")
+        rows = self.cur.fetchall()
+        if len(rows) > 0:
+            self.cbCategory.clear()
+            self.dicCat.clear()
+            for id_cat, name in rows:
+                self.dicCat[str(name)] = id_cat
+                self.cbCategory.addItem(str(name))
+            self.getCommands()
+        else:
+            self.cbCategory.clear()
+            self.cbCommand.clear()
+            self.cbSection.clear()
+            self.cbTitle.clear()
+            self.txtEditRaw.clear()
+            self.dicCat.clear()
+            self.dicCmd.clear()
+            self.dicSec.clear()
+            self.dicTit.clear()
+
+    def getCommands(self):
+        if self.cbCategory.count() > 0:
+            value = str(self.cbCategory.currentText())
+            select = "SELECT id_command,name FROM command WHERE id_category=" + str(self.dicCat[value])  + " ORDER BY LOWER(name)"
+            self.cur.execute(select)
             rows = self.cur.fetchall()
-            enc = False
-            for r in rows:
-                if str(text).lower() == r[0].lower():
-                    enc = True 
-                    break
-            if enc:
-                QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
-                self.addCategory()
+            if len(rows) > 0:
+                self.cbCommand.clear()
+                self.dicCmd.clear()
+                for id_cmd, name in rows:
+                    self.dicCmd[str(name)] = id_cmd
+                    self.cbCommand.addItem(str(name))
+                self.getSections()
             else:
+                self.cbCommand.clear()
+                self.cbSection.clear()
+                self.cbTitle.clear()
+                self.txtEditRaw.clear()
+                self.dicCmd.clear()
+                self.dicSec.clear()
+                self.dicTit.clear()
+
+    def getSections(self):
+        if self.cbCommand.count() > 0:
+            value = str(self.cbCommand.currentText())
+            select = "SELECT id_section,name FROM section WHERE id_command=" + str(self.dicCmd[value]) + " ORDER BY LOWER(name)"
+            self.cur.execute(select)
+            rows = self.cur.fetchall()
+            if len(rows) > 0:
+                self.cbSection.clear()
+                self.dicSec.clear()
+                for id_sect, name in rows:
+                    self.dicSec[str(name)] = id_sect
+                    self.cbSection.addItem(str(name))
+                self.getTitles()
+            else:
+                self.cbSection.clear()
+                self.cbTitle.clear()
+                self.txtEditRaw.clear()
+                self.dicSec.clear()
+                self.dicTit.clear()
+
+    def getTitles(self):
+        if self.cbSection.count() > 0:
+            value = str(self.cbSection.currentText())
+            select = "SELECT id_data,title,text FROM data WHERE id_section=" + str(self.dicSec[value]) + " ORDER BY LOWER(title)"
+            self.cur.execute(select)
+            rows = self.cur.fetchall()
+            if len(rows) > 0:
+                self.cbTitle.clear()
+                self.txtEditRaw.clear()
+                self.txtEditRaw.append(rows[0][2])
+                self.dicTit.clear()
+                for id_data, title, text in rows:
+                    self.dicTit[str(title)] = id_data
+                    self.cbTitle.addItem(str(title))
+            else:
+                self.cbTitle.clear()
+                self.txtEditRaw.clear()
+                self.dicTit.clear()
+
+    def getData(self):
+        if self.cbTitle.count() > 0:
+            nameTitle = str(self.cbTitle.currentText())
+            id_data = str(self.dicTit[nameTitle])
+            self.cur.execute("SELECT text FROM data WHERE id_data=?", (id_data,))
+            row = self.cur.fetchone()
+            self.txtEditRaw.clear()
+            self.txtEditRaw.setText(row[0])
+            
+    def addCategory(self):
+        if isOpenBd:
+            text, ok = QtGui.QInputDialog.getText(self, 'New Category', 'Enter the name of Category:')
+            if ok:
                 if str(text).isalnum():
-                    self.cur.execute("INSERT INTO category(name) VALUES(?)", (str(text),))
-                    self.con.commit()
-                    self.getAllDataFromBD()
-                    index = self.cbCategory.count() - 1
-                    self.cbCategory.setCurrentIndex(index)
-                    self.onCbCategory_change()
+                    if str(text) in self.dicCat: 
+                        QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
+                        self.addCategory()
+                    else:
+                        self.cur.execute("INSERT INTO category(name) VALUES(?)", (str(text),))
+                        self.con.commit()
+                        self.getCategories()
                 else:
                     QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
                     self.addCategory()
-
+        else:
+            QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
 
     def delCategory(self):
         if self.cbCategory.count() > 0:
             reply = QtGui.QMessageBox.question(self, 'Delete Category', 'Are you sure?:', QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
             if reply == QtGui.QMessageBox.Ok:
-                value = self.cbCategory.currentText()
-                select = str("SELECT id_category FROM category WHERE name=\"" + value + "\"")
-                self.cur.execute(select)
-                id_cat = self.cur.fetchone()
-                self.cur.execute("SELECT id_command FROM command WHERE id_category=?", id_cat)
+                nameCat = str(self.cbCategory.currentText())
+                id_cat = str(self.dicCat[nameCat])
+                self.cur.execute("SELECT id_command FROM command WHERE id_category=?", (str(self.dicCat[nameCat]),))
                 id_cmd = self.cur.fetchall() 
-                for i in id_cmd:
-                    self.cur.execute("SELECT id_section FROM Section WHERE id_command=?", i)
-                    id_sect = self.cur.fetchall()
-                    for j in id_sect:
-                        self.cur.execute("DELETE FROM data WHERE id_section=?", (str(j[0]),))
-                    self.cur.execute("DELETE FROM section WHERE id_command=?", (str(i[0]),))
-                self.cur.execute("DELETE FROM command WHERE id_category=?", (str(id_cat[0]),))
-                self.cur.execute("DELETE FROM category WHERE id_category=?", (str(id_cat[0]),))
+                if len(id_cmd) > 0:
+                    for i in id_cmd:
+                        self.cur.execute("SELECT id_section FROM Section WHERE id_command=?", i)
+                        id_sect = self.cur.fetchall()
+                        for j in id_sect:
+                            self.cur.execute("DELETE FROM data WHERE id_section=?", (str(j[0]),))
+                        self.cur.execute("DELETE FROM section WHERE id_command=?", (str(i[0]),))
+                    self.cur.execute("DELETE FROM command WHERE id_category=?", (str(id_cat),))
+                self.cur.execute("DELETE FROM category WHERE id_category=?", (str(id_cat),))
                 self.con.commit()
-
-                self.getAllDataFromBD()
-                self.cbCategory.setCurrentIndex(0)
-                self.onCbCategory_change()
+                self.getCategories()
         else:
             QtGui.QMessageBox.information(self, "Information", "There is no category to remove.", QtGui.QMessageBox.Ok)
 
     def addCommand(self):
-        if self.cbCategory.count() > 0:
-            text, ok = QtGui.QInputDialog.getText(self, 'New Command', 'Enter the name of Command:')
-            if ok:
-                value = self.cbCategory.currentText()
-                select = str("SELECT id_category FROM category WHERE name=\"" + value + "\"")
-                self.cur.execute(select)
-                id_cat = self.cur.fetchone()
-                self.cur.execute("SELECT name FROM command WHERE id_category=?", (str(id_cat[0]),))
-                rows = self.cur.fetchall()
-                enc = False
-                for r in rows:
-                    if str(text).lower() == r[0].lower():
-                        enc = True 
-                        break
-                if enc:
-                    QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
-                    self.addCommand()
-                else:
+        if isOpenBd:
+            if self.cbCategory.count() > 0:
+                text, ok = QtGui.QInputDialog.getText(self, 'New Command', 'Enter the name of Command:')
+                if ok:
                     if str(text).isalnum():
-                        data = [str(id_cat[0]), str(text)]
-                        self.cur.execute("INSERT INTO command(id_category, name) VALUES(?,?)", data)
-                        self.con.commit()
-                        self.cbCommand.addItem(text)
-                        index = self.cbCommand.count() - 1
-                        self.cbCommand.setCurrentIndex(index)
-                        self.onCbCommand_change()
+                        if str(text) in self.dicCmd: 
+                            QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
+                            self.addCommand()
+                        else:
+                            nameCat = str(self.cbCategory.currentText())
+                            id_cat = str(self.dicCat[nameCat])
+                            data = [id_cat, str(text)]
+                            self.cur.execute("INSERT INTO command(id_category, name) VALUES(?,?)", data)
+                            self.con.commit()
+                            self.getCommands()
                     else:
                         QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
                         self.addCommand()
+            else:
+                QtGui.QMessageBox.information(self, "Information", "Need a category to introduce command", QtGui.QMessageBox.Ok)
         else:
-            QtGui.QMessageBox.information(self, "Information", "There is no category to add a command.", QtGui.QMessageBox.Ok)
-        
+            QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
 
     def delCommand(self):
         if self.cbCommand.count() > 0:
             reply = QtGui.QMessageBox.question(self, 'Delete Command', 'Are you sure?:', QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
             if reply == QtGui.QMessageBox.Ok:
-                value = self.cbCommand.currentText()
-                select = str("SELECT id_command FROM command WHERE name=\"" + value + "\"")
-                self.cur.execute(select)
-                id_cmd = self.cur.fetchone() 
-                self.cur.execute("SELECT id_section FROM Section WHERE id_command=?", (str(id_cmd[0]),))
+                nameCmd = str(self.cbCommand.currentText())
+                id_cmd = str(self.dicCmd[nameCmd])
+                self.cur.execute("SELECT id_section FROM Section WHERE id_command=?", (id_cmd,))
                 id_sect = self.cur.fetchall()
-                for j in id_sect:
-                    self.cur.execute("DELETE FROM data WHERE id_section=?", (str(j[0]),))
-                self.cur.execute("DELETE FROM section WHERE id_command=?", (str(id_cmd[0]),))
+                if len(id_sect) > 0:
+                    for j in id_sect:
+                        self.cur.execute("DELETE FROM data WHERE id_section=?", (str(j[0]),))
+                    self.cur.execute("DELETE FROM section WHERE id_command=?", (str(id_cmd[0]),))
                 self.cur.execute("DELETE FROM command WHERE id_command=?", (str(id_cmd[0]),))
                 self.con.commit()
-
-                self.getAllDataFromBD()
-                self.cbCommand.setCurrentIndex(0)
-                self.onCbCategory_change()
+                self.getCategories()
         else:
             QtGui.QMessageBox.information(self, "Information", "There is no command to delete.", QtGui.QMessageBox.Ok)
 
     def addSection(self):
-        if self.cbCommand.count() > 0 and self.cbCategory.count() > 0:
-            text, ok = QtGui.QInputDialog.getText(self, 'New Section', 'Enter the name of section:')
-            if ok:
-                valueCategory = self.cbCategory.currentText()
-                select = "SELECT id_category FROM category WHERE name=\"" + str(valueCategory) + "\""
-                self.cur.execute(select)
-                idCat = self.cur.fetchone()
-                valueCmd = self.cbCommand.currentText()
-                select = str("SELECT id_command FROM command WHERE name=\"" + valueCmd + "\"" + " AND id_category=" + str(idCat[0]))
-                self.cur.execute(select)
-                id_cmd = self.cur.fetchone()
-                self.cur.execute("SELECT name FROM section WHERE id_command=?", (str(id_cmd[0]),))
-                rows = self.cur.fetchall()
-                enc = False
-                text = unicode(text)
-                for r in rows:
-                    if str(text).lower() == r[0].lower():
-                        enc = True 
-                        break
-                if enc:
-                    QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
-                    self.addSection()
-                else:
+        if isOpenBd:
+            if self.cbCommand.count() > 0 and self.cbCategory.count() > 0:
+                text, ok = QtGui.QInputDialog.getText(self, 'New Section', 'Enter the name of section:')
+                if ok:
                     if str(text).isalnum():
-                        data = [str(id_cmd[0]), str(text)]
-                        self.cur.execute("INSERT INTO section(id_command, name) VALUES(?,?)", data)
-                        self.con.commit()
-                        self.cbSection.addItem(text)
-                        index = self.cbSection.count() - 1
-                        self.cbSection.setCurrentIndex(index)
-                        self.onCbSection_change()
+                        if str(text) in self.dicSec: 
+                            QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
+                            self.addSection()
+                        else:
+                            nameCmd = str(self.cbCommand.currentText())
+                            id_cmd = str(self.dicCmd[nameCmd])
+                            data = [id_cmd, str(text)]
+                            self.cur.execute("INSERT INTO section(id_command, name) VALUES(?,?)", data)
+                            self.con.commit()
+                            self.getSections()
                     else:
                         QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
                         self.addSection()
+            else:
+                QtGui.QMessageBox.information(self, "Information", "Need a command to introduce section", QtGui.QMessageBox.Ok)
         else:
-            QtGui.QMessageBox.information(self, "Information", "There is no command to add a section.", QtGui.QMessageBox.Ok)
-
+            QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
 
     def delSection(self):
         if self.cbSection.count() > 0:
             reply = QtGui.QMessageBox.question(self, 'Delete section', 'Are you sure?:', QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
             if reply == QtGui.QMessageBox.Ok:
-                value = self.cbSection.currentText()
-                select = str("SELECT id_section FROM section WHERE name=\"" + value + "\"")
-                self.cur.execute(select)
-                id_sect = self.cur.fetchone() 
-                self.cur.execute("DELETE FROM data WHERE id_section=?", (str(id_sect[0]),))
-                self.cur.execute("DELETE FROM section WHERE id_section=?", (str(id_sect[0]),))
+                nameSect = str(self.cbSection.currentText())
+                id_sect = str(self.dicSec[nameSect])
+                self.cur.execute("DELETE FROM data WHERE id_section=?", (id_sect,))
+                self.cur.execute("DELETE FROM section WHERE id_section=?", (id_sect,))
                 self.con.commit()
-
-                self.getAllDataFromBD()
-                self.cbSection.setCurrentIndex(0)
-                self.onCbCategory_change()
+                self.getCategories()
         else:
-            QtGui.QMessageBox.information(self, "Information", "There is no section to delete.", QtGui.QMessageBox.Ok)
-        
+            QtGui.QMessageBox.information(self, "Information", "There is no command to delete.", QtGui.QMessageBox.Ok)
+   
+    def addTitle(self):
+        if isOpenBd:
+            if self.cbCommand.count() > 0 and self.cbCategory.count() > 0 and self.cbSection.count() > 0:
+                text, ok = QtGui.QInputDialog.getText(self, 'New Title', 'Enter the name of title:')
+                if ok:
+                    if all(x.isalnum() or x.isspace() for x in str(text)):
+                        if str(text) in self.dicTit: 
+                            QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
+                            self.addTitle()
+                        else:
+                            nameSect = str(self.cbSection.currentText())
+                            id_sect = str(self.dicSec[nameSect])
+                            data = [id_sect, str(text), ""]
+                            self.cur.execute("INSERT INTO data(id_section, title, text) VALUES(?,?,?)", data)
+                            self.con.commit()
+                            self.getTitles()
+                    else:
+                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
+                        self.addTitle()
+            else:
+                QtGui.QMessageBox.information(self, "Information", "Need a section to introduce title", QtGui.QMessageBox.Ok)
+        else:
+            QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
+
+    def delTitle(self):
+        if self.cbTitle.count() > 0:
+            reply = QtGui.QMessageBox.question(self, 'Delete title', 'Are you sure?:', QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+            if reply == QtGui.QMessageBox.Ok:
+                nameTitle = str(self.cbTitle.currentText())
+                id_data = str(self.dicTit[nameTitle])
+                self.cur.execute("DELETE FROM data WHERE id_data=?", (id_data,))
+                self.con.commit()
+                self.getCategories()
+        else:
+            QtGui.QMessageBox.information(self, "Information", "There is no command to delete.", QtGui.QMessageBox.Ok)
 
 
     def saveBd(self):
-        value = self.cbSection.currentText()
-        select = str("SELECT id_section FROM section WHERE name=\"" + value + "\"")
-        self.cur.execute(select)
-        id_sect = self.cur.fetchone()
-        value = self.cbCommand.currentText()
-        self.cur.execute("SELECT COUNT(*) FROM data WHERE id_section=?", (str(id_sect[0]),))
-        items = self.cur.fetchone()
-        title = self.txtTitle.toPlainText()
-        text = self.txtEditRaw.toPlainText()
-        title = unicode(title)
-        text = unicode(text)
-        if int(items[0]) > 0:
-            self.cur.execute("UPDATE data SET title=?, text=? WHERE id_section=?", (title, text, id_sect[0]))
+        if isOpenBd:
+            if self.cbTitle.count() > 0:
+                nameTitle = str(self.cbTitle.currentText())
+                id_data = str(self.dicTit[nameTitle])
+                text = self.txtEditRaw.toPlainText()
+                text = unicode(text)
+                if not text:
+                    QtGui.QMessageBox.information(self, "Information", "Text is empty", QtGui.QMessageBox.Ok)
+                else:
+                    self.cur.execute("UPDATE data SET text=? WHERE id_data=?", (text, id_data))
+                    QtGui.QMessageBox.information(self, "Information", "Data were up to date.", QtGui.QMessageBox.Ok)
+                    self.con.commit()
+            else:
+                QtGui.QMessageBox.information(self, "Information", "Need a tile to save text", QtGui.QMessageBox.Ok)
         else:
-            self.cur.execute("INSERT INTO data(id_section, title, text) VALUES(?,?,?)", (id_sect[0], title, text))
-        QtGui.QMessageBox.information(self, "Information", "Data were up to date.", QtGui.QMessageBox.Ok)
-        self.con.commit()
+            QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
 
 
     def __del__(self):
         if self.con != None:
             self.con.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     window = Ui_Form()
     if os.path.exists(sqlite_file):
         window.openBd(sqlite_file)
+        isOpenBd = True
     window.show()
     sys.exit(app.exec_())

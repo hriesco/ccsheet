@@ -108,9 +108,6 @@ def get_names_category(cur, nameCat, myFilter):
         value = nameCat[:-1] + '%'
         cur.execute("SELECT id_category,name FROM category WHERE name LIKE ? ORDER BY LOWER(name)", (value,))
     return cur.fetchall()
-def get_nameCategory_by_idCat(cur, idCat):
-    cur.execute("SELECT name FROM category WHERE id_category=?", (idCat,))
-    return cur.fetchone()
 def get_commands_by_idCat(cur, idCat):
     cur.execute("SELECT id_command,name FROM command WHERE id_category=? ORDER BY LOWER(name)", (idCat,))
     return cur.fetchall()
@@ -137,20 +134,23 @@ def get_nameTitle_byIdData(cur, idData):
     cur.execute("SELECT title FROM data WHERE id_data=?", (idData,))
     return str(cur.fetchone()[0])
 
+def func_print_header_data(cur, idCat, idCmd, idSect):
+    cls()
+    col = Color()
+    col.light_blue("---------------------------------------------------------",True)
+    col.light_green(" "+ get_nameCat_byIdCat(cur, idCat), False)
+    col.light_blue(">> " + get_nameCmd_byIdCmd(cur, idCmd), False)
+    col.light_purple(">> " + get_nameSect_byIdSect(cur, idSect), True)
+
 def func_printData(cur, idCat, idCmd, idSect, idData):
-    print idData
     rows = get_data_by_idData(cur, idSect, idData)   
     if len(rows) > 0:
-        cls()
         col = Color()
-        col.light_blue("---------------------------------------------------------",True)
-        col.light_green(" "+ get_nameCat_byIdCat(cur, idCat), False)
-        col.light_blue(">> " + get_nameCmd_byIdCmd(cur, idCmd), False)
-        col.light_purple(">> " + get_nameSect_byIdSect(cur, idSect), True)
         col.light_blue("---------------------------------------------------------",True)
         col.light_red(" " + get_nameTitle_byIdData(cur, idData), True)
         col.light_blue("---------------------------------------------------------",True)
         print rows[0][0]
+        print
     else:
         print "No text in this section"
 
@@ -162,6 +162,8 @@ def func_listData(cur, idCat, idCmd, idSect):
         col.light_aqua("--- DATA --------------------------", True)
         col.light_blue("0)", False)
         col.light_red("EXIT", True)
+        col.light_blue("a)", False)
+        col.light_red("ALL", True)
         for i, idData, in enumerate(rows):
             dic[i+1] = str(idData[0])
             if i == len(rows) - 1:
@@ -171,11 +173,19 @@ def func_listData(cur, idCat, idCmd, idSect):
                 col.light_blue(str(i+1) + ")", False)
                 print "%s\t\t" % r[i][1],
 
-        indice = int(raw_input("ID > "))
-        if indice > len(dic) or indice == 0:
-            sys.exit(2)
-        idData = dic.get(indice)
-        func_printData(cur, idCat, idCmd, idSect, idData)
+        data = raw_input("ID > ")
+        if (data == "a"):
+            func_print_header_data(cur, idCat, idCmd, idSect)
+            print dic
+            for i in dic:
+                func_printData(cur, idCat, idCmd, idSect, dic[i])
+        else:
+            indice = int(data)
+            if indice > len(dic) or indice == 0:
+                sys.exit(2)
+            idData = dic.get(indice)
+            func_print_header_data(cur, idCat, idCmd, idSect)
+            func_printData(cur, idCat, idCmd, idSect, idData)
     else:
         print "No data in section"
 
