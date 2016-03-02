@@ -486,7 +486,8 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     window = Ui_Form()
-    if os.path.exists(sqlite_file):
+    location = "./" + sqlite_file
+    if os.path.exists(location):
         window.openBd(sqlite_file)
         isOpenBd = True
     window.show()

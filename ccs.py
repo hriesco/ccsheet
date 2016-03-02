@@ -171,12 +171,11 @@ def func_listData(cur, idCat, idCmd, idSect):
                 print "%s\t\t" % rows[i][1]
             else:
                 col.light_blue(str(i+1) + ")", False)
-                print "%s\t\t" % r[i][1],
+                print "%s\t\t" % rows[i][1],
 
         data = raw_input("ID > ")
         if (data == "a"):
             func_print_header_data(cur, idCat, idCmd, idSect)
-            print dic
             for i in dic:
                 func_printData(cur, idCat, idCmd, idSect, dic[i])
         else:
