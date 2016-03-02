@@ -38,7 +38,7 @@
     sudo chmod +x install.sh
     sudo ./install.sh
   ```
-    
+
 
 ## Uninstall
 
@@ -48,6 +48,14 @@
     sudo chmod +x uninstall.sh
     sudo ./uninstall.sh
   ```
+
+
+## Usage
+
+* **ccs**    -> Calls application command cheatsheet help
+* **ccsl**   -> List all categories in command cheatsheet
+* **ccsgui** -> Open the application interface to write new cheatsheets
+ 
 
 ## Suggestions
 
