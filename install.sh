@@ -22,7 +22,7 @@ if [ $UID -eq 0 ]; then
 			read -p "Install for user: $user [y/n] " opc 
 			if [ $opc = 'y' ]; then
 				next=true
-				usermod -a -G ccsheet $user
+				gpasswd -a $user ccsheet
 				echo '# Command Cheatsheet Alias -------------------' >> /home/$user/.bashrc
 				echo 'alias ccs="python /opt/ccsheet/ccs.py"' >> /home/$user/.bashrc
 				echo 'alias ccsl="python /opt/ccsheet/ccs.py -l"' >> /home/$user/.bashrc
