@@ -6,6 +6,7 @@ import sqlite3 as lite
 from PyQt4 import QtCore, QtGui
 
 sqlite_file = 'ccs.db'
+directory = '/opt/ccsheet/'
 isOpenBd = False
 
 try:
@@ -487,8 +488,13 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     window = Ui_Form()
     location = "./" + sqlite_file
+    location2 = directory + sqlite_file
     if os.path.exists(location):
-        window.openBd(sqlite_file)
+        window.openBd(location)
         isOpenBd = True
+    elif os.path.exists(location2):
+        window.openBd(location2)
+        isOpenBd = True
+
     window.show()
     sys.exit(app.exec_())
