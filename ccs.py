@@ -7,6 +7,7 @@ import getopt
 import os
 
 sqlite_file = 'ccs.db'
+directory = '/opt/ccsheet/'
 
 class Color():
     def black(self, text, endLine):
@@ -316,7 +317,12 @@ def usage():
 
 if __name__ == "__main__":
     location = "./" + sqlite_file
+    location2 = directory + sqlite_file
+
     if os.path.exists(location):
+        con, cur = connect()
+        main(cur)
+    elif os.path.exists(location2):
         con, cur = connect()
         main(cur)
     else:
