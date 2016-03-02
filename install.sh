@@ -12,7 +12,7 @@ if [ $UID -eq 0 ]; then
 	echo 'alias ccs="python /opt/ccsheet/ccs.py"' >> /root/.bashrc
 	echo 'alias ccsl="python /opt/ccsheet/ccs.py -l"' >> /root/.bashrc
 	echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py"' >> /root/.bashrc
-	echo '-----------------------------------------------' >> /root/.bashrc
+	echo '# Command Cheatsheet Alias -------------------' >> /root/.bashrc
 	
 	for user in `ls /home/ | grep -v "lost+found"`
 	do
@@ -37,7 +37,8 @@ if [ $UID -eq 0 ]; then
 	done
 	clear
 	echo "Installation done..."
-	echo "When you restart terminal you can put the next commands to access the application"
+	echo "To make the application works you must restart the user session"
+	echo "When you restart you can put the next commands to access the application"
 	echo "ccs    - command cheatsheet application"
 	echo "ccsl   - command cheatsheet list categories"
 	echo "ccsgui - command cheatsheet gui for make new cheatsheet"
