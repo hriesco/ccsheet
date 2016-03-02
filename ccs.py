@@ -94,8 +94,8 @@ class Color():
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
-def connect():
-    con = lite.connect(sqlite_file)
+def connect(location):
+    con = lite.connect(location)
     cur = con.cursor()
     return con, cur
 
@@ -320,10 +320,10 @@ if __name__ == "__main__":
     location2 = directory + sqlite_file
 
     if os.path.exists(location):
-        con, cur = connect()
+        con, cur = connect(location)
         main(cur)
     elif os.path.exists(location2):
-        con, cur = connect()
+        con, cur = connect(location2)
         main(cur)
     else:
         print sqlite_file + " not exist"

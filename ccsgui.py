@@ -184,8 +184,8 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         self.actionOpenFile.triggered.connect(self.openFile)
         self.actionQuit.triggered.connect(self.exitApp)
 
-    def openBd(self, filename):
-        openBd = True
+    def connect(self, filename):
+        isOpenBd = True
         self.con = lite.connect(str(filename))
         self.cur = self.con.cursor()
         self.cur.execute("PRAGMA foreign_keys = ON")
@@ -199,7 +199,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
 
     def openFile(self):
         filename = QtGui.QFileDialog.getOpenFileName(self, "Open File")
-        self.openBd(filename)
+        self.connect(filename)
 
     def onCbCategory_change(self):
         self.getCommands()
@@ -490,10 +490,10 @@ if __name__ == "__main__":
     location = "./" + sqlite_file
     location2 = directory + sqlite_file
     if os.path.exists(location):
-        window.openBd(location)
+        window.connect(location)
         isOpenBd = True
     elif os.path.exists(location2):
-        window.openBd(location2)
+        window.connect(location2)
         isOpenBd = True
 
     window.show()
