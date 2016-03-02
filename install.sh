@@ -27,7 +27,7 @@ if [ $UID -eq 0 ]; then
 				echo 'alias ccs="python /opt/ccsheet/ccs.py"' >> /home/$user/.bashrc
 				echo 'alias ccsl="python /opt/ccsheet/ccs.py -l"' >> /home/$user/.bashrc
 				echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py"' >> /home/$user/.bashrc
-				echo '#-----------------------------------------------' >> /home/$user/.bashrc
+				echo '# Command Cheatsheet Alias -------------------' >> /home/$user/.bashrc
 			elif [ $opc = 'n' ]; then
 				next=true
 			else
