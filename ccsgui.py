@@ -308,7 +308,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
         if isOpenBd:
             text, ok = QtGui.QInputDialog.getText(self, 'New Category', 'Enter the name of Category:')
             if ok:
-                if str(text).isalnum():
+                if all(x.isalnum() or x.isspace() for x in str(text)):
                     if str(text) in self.dicCat: 
                         QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
                         self.addCategory()
@@ -317,7 +317,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
                         self.con.commit()
                         self.getCategories()
                 else:
-                    QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
+                    QtGui.QMessageBox.information(self, "Information", "The name can only contains letters, numbers and whitespaces.", QtGui.QMessageBox.Ok)
                     self.addCategory()
         else:
             QtGui.QMessageBox.information(self, "Information", "Not connected to database.", QtGui.QMessageBox.Ok)
@@ -349,7 +349,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
             if self.cbCategory.count() > 0:
                 text, ok = QtGui.QInputDialog.getText(self, 'New Command', 'Enter the name of Command:')
                 if ok:
-                    if str(text).isalnum():
+                    if all(x.isalnum() or x.isspace() for x in str(text)):
                         if str(text) in self.dicCmd: 
                             QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
                             self.addCommand()
@@ -361,7 +361,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
                             self.con.commit()
                             self.getCommands()
                     else:
-                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
+                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters, numbers and whitespaces. ", QtGui.QMessageBox.Ok)
                         self.addCommand()
             else:
                 QtGui.QMessageBox.information(self, "Information", "Need a category to introduce command", QtGui.QMessageBox.Ok)
@@ -391,7 +391,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
             if self.cbCommand.count() > 0 and self.cbCategory.count() > 0:
                 text, ok = QtGui.QInputDialog.getText(self, 'New Section', 'Enter the name of section:')
                 if ok:
-                    if str(text).isalnum():
+                    if all(x.isalnum() or x.isspace() for x in str(text)):
                         if str(text) in self.dicSec: 
                             QtGui.QMessageBox.information(self, "Information", "This name is in database, try other name.", QtGui.QMessageBox.Ok)
                             self.addSection()
@@ -403,7 +403,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
                             self.con.commit()
                             self.getSections()
                     else:
-                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
+                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters, numbers and whitespaces.", QtGui.QMessageBox.Ok)
                         self.addSection()
             else:
                 QtGui.QMessageBox.information(self, "Information", "Need a command to introduce section", QtGui.QMessageBox.Ok)
@@ -440,7 +440,7 @@ class Ui_Form(QtGui.QMainWindow, QtGui.QWidget):
                             self.con.commit()
                             self.getTitles()
                     else:
-                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters and numbers.", QtGui.QMessageBox.Ok)
+                        QtGui.QMessageBox.information(self, "Information", "The name can only contains letters, numbers and whitespaces.", QtGui.QMessageBox.Ok)
                         self.addTitle()
             else:
                 QtGui.QMessageBox.information(self, "Information", "Need a section to introduce title", QtGui.QMessageBox.Ok)
