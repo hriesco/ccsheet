@@ -11,7 +11,7 @@ if [ $UID -eq 0 ]; then
 	echo '# Command Cheatsheet Alias -------------------' >> /root/.bashrc
 	echo 'alias ccs="python /opt/ccsheet/ccs.py"' >> /root/.bashrc
 	echo 'alias ccsl="python /opt/ccsheet/ccs.py -l"' >> /root/.bashrc
-	echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py"' >> /root/.bashrc
+	echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py &"' >> /root/.bashrc
 	echo '# Command Cheatsheet Alias -------------------' >> /root/.bashrc
 	
 	for user in `ls /home/ | grep -v "lost+found"`
@@ -26,7 +26,7 @@ if [ $UID -eq 0 ]; then
 				echo '# Command Cheatsheet Alias -------------------' >> /home/$user/.bashrc
 				echo 'alias ccs="python /opt/ccsheet/ccs.py"' >> /home/$user/.bashrc
 				echo 'alias ccsl="python /opt/ccsheet/ccs.py -l"' >> /home/$user/.bashrc
-				echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py"' >> /home/$user/.bashrc
+				echo 'alias ccsgui="python /opt/ccsheet/ccsgui.py &"' >> /home/$user/.bashrc
 				echo '# Command Cheatsheet Alias -------------------' >> /home/$user/.bashrc
 			elif [ $opc = 'n' ]; then
 				next=true
