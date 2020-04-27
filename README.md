@@ -57,7 +57,3 @@
 * **ccsgui** -> Open the application interface to write new cheatsheets
  
 
-## Suggestions
-
-* I accept any suggestion to make any changes to the application
-* Write me at the following email: hectorriesco@hotmail.com
